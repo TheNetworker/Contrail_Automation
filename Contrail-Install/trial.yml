@@ -1,0 +1,17 @@
+# Copyright 2018, Juniper Networks Pvt Ltd.
+# All rights reserved.
+# command example: ansible-playbook -i all.inv 01-contrail-server-manager.yml
+---
+- name: install contrail
+  hosts: base-vm
+  gather_facts: false
+  tasks:
+
+    - name: Gather facts about the created servers
+      shell: ls /root/
+      register: list
+
+    - debug:
+        msg:
+          - "{{list}}"
+
