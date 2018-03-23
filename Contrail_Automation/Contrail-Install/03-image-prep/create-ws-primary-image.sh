@@ -9,9 +9,7 @@ virt-customize -a images/ubuntu-primary.img \
 --hostname ws-primary \
 --run-command 'echo "ubuntu ALL=(root) NOPASSWD:ALL" | tee -a /etc/sudoers.d/ubuntu' \
 --chmod 0440:/etc/sudoers.d/ubuntu \
---copy-in firstboots/primaryfb:/etc/network/if-up.d/ \
---copy-in firstboots/primaryfb:/root/ \
---run-command 'chmod +x /etc/network/if-up.d/primaryfb' \
+--copy-in firstboots/primaryfb.sh:/root/ \
 --install mysql-server,mysql-client,sshpass,lsyncd,nginx,php-fpm,php-mysql \
 --install php-curl,php-gd,php-mbstring,php-mcrypt,php-xml,php-xmlrpc \
 --run-command 'sed -i "s/PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config' \
