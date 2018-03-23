@@ -1,22 +1,22 @@
 #!/bin/bash
 
 # Copy the original ubuntu image to primary image
-cp /root/images/ubuntu-image.img /root/images/ubuntu-primary.img
+cp images/ubuntu-image.img images/ubuntu-primary.img
 
 # Customize the image
-virt-customize -a /root/images/ubuntu-primary.img \
+virt-customize -a images/ubuntu-primary.img \
 --root-password password:juniper123 \
 --hostname ws-primary \
 --run-command 'echo "ubuntu ALL=(root) NOPASSWD:ALL" | tee -a /etc/sudoers.d/ubuntu' \
 --chmod 0440:/etc/sudoers.d/ubuntu \
---copy-in primaryfb:/etc/network/if-up.d/ \
---copy-in primaryfb:/root/ \
+--copy-in firstboots/primaryfb:/etc/network/if-up.d/ \
+--copy-in firstboots/primaryfb:/root/ \
 --run-command 'chmod +x /etc/network/if-up.d/primaryfb' \
 --install mysql-server,mysql-client,sshpass,lsyncd,nginx,php-fpm,php-mysql \
 --install php-curl,php-gd,php-mbstring,php-mcrypt,php-xml,php-xmlrpc \
 --run-command 'sed -i "s/PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config' \
 --run-command 'sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config' \
---copy-in /root/configs/default:/etc/nginx/sites-available/ \
+--copy-in configs/default:/etc/nginx/sites-available/ \
 --run-command 'systemctl reload nginx' \
 --run-command 'wget http://wordpress.org/latest.tar.gz' \
 --run-command 'tar -xvf latest.tar.gz' \
@@ -31,4 +31,4 @@ virt-customize -a /root/images/ubuntu-primary.img \
 --run-command 'chmod +x wp-cli.phar' \
 --run-command 'sudo mv wp-cli.phar /usr/local/bin/wp' \
 --run-command 'mkdir -p /etc/lsyncd' \
---copy-in /root/configs/lsyncd.conf.lua:/etc/lsyncd/
+--copy-in configs/lsyncd.conf.lua:/etc/lsyncd/
