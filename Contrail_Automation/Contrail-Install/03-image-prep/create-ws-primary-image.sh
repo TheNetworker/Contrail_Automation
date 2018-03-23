@@ -31,4 +31,5 @@ virt-customize -a images/ubuntu-primary.img \
 --run-command 'chmod +x wp-cli.phar' \
 --run-command 'sudo mv wp-cli.phar /usr/local/bin/wp' \
 --run-command 'mkdir -p /etc/lsyncd' \
---copy-in configs/lsyncd.conf.lua:/etc/lsyncd/
+--copy-in configs/lsyncd.conf.lua:/etc/lsyncd/ \
+--copy-in configs/phptest.php:/var/www/html/
