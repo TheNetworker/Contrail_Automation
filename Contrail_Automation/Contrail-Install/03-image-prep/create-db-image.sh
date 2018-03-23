@@ -1,14 +1,14 @@
 #!/bin/bash
 
-cp /root/images/ubuntu-image.img /root/images/ubuntu-db.img
+cp images/ubuntu-image.img images/ubuntu-db.img
 
-virt-customize -a /root/images/ubuntu-db.img \
+virt-customize -a images/ubuntu-db.img \
 --root-password password:juniper123 \
 --hostname db-server \
 --run-command 'echo "ubuntu ALL=(root) NOPASSWD:ALL" | tee -a /etc/sudoers.d/ubuntu' \
 --chmod 0440:/etc/sudoers.d/ubuntu \
---copy-in dbfb:/root/ \
---copy-in dbfb:/etc/network/if-up.d/ \
+--copy-in firstboots/dbfb:/root/ \
+--copy-in firstboots/dbfb:/etc/network/if-up.d/ \
 --run-command 'chmod +x /etc/network/if-up.d/dbfb' \
 --install mysql-server,mysql-client \
 --run-command 'cp /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/my.cnf' \
