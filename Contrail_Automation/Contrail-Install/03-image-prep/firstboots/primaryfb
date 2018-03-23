@@ -1,6 +1,6 @@
 #!bin/bash
-ws_ip=10.0.2.3
-db_ip=10.0.5.3
+db_ip=$(sed -n "1p" "/root/ips")
+ws_ip=$(sed -n "2p" "/root/ips")
 
 if [[-e /root/started ]]; then
   echo "Firstboot has already started"
