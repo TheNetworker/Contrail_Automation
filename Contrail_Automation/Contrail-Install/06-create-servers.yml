@@ -52,12 +52,21 @@
           - net-id: "{{ db_network_id[0] }}"
         security_groups: default
         timeout: 3600
-        userdata: |
-          #cloud-config
-          chpasswd:
-            list: |
-              password: juniper123
-            expire: False
+        userdata: /root/dbfb
+        
+    - name: Gather server facts from the DB Server
+      os_server_facts:
+        auth: "{{ os_auth }}"
+        server: db
+        
+    - name: Get the IP address of DB server
+      set_fact:
+        db_server_ip: "{{ openstack_servers | json_query(jq_dbip) }}"
+      vars:
+        jq_dbip: "[?name=='webserver_network'].id"
+    - debug:
+        msg:
+          - "{{ db_server_ip }}"
 
     - name: Create WEBSERVER SECONDARY
       os_server:
@@ -69,13 +78,22 @@
           - net-id: "{{ webserver_network_id[0] }}"
         security_groups: default
         timeout: 3600
-        userdata: |
-          #cloud-config
-          chpasswd:
-            list: |
-              password: juniper123
-            expire: False
+        userdata: /root/secfb
 
+    - name: Gather server facts from the secondary webserver
+      os_server_facts:
+        auth: "{{ os_auth }}"
+        server: webserver_secondary
+        
+    - name: Get the IP address of secondary web server
+      set_fact:
+        ws_sec_server_ip: "{{ openstack_servers | json_query(jq_sec_ip) }}"
+      vars:
+        jq_sec_ip: "[?name=='webserver_network'].id"
+    - debug:
+        msg:
+          - "{{ ws_sec_server_ip }}"
+          
     - name: Create WEBSERVER PRIMARY
       os_server:
         auth: "{{ os_auth }}"
@@ -86,12 +104,7 @@
           - net-id: "{{ webserver_network_id[0] }}"
         security_groups: default
         timeout: 3600
-        userdata: |
-          #cloud-config
-          chpasswd:
-            list: |
-              password: juniper123
-            expire: False
+        userdata: /root/primaryfb
 
     - name: Create GUI SERVER
       os_server:
