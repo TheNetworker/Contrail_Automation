@@ -10,7 +10,7 @@ virt-customize -a images/ubuntu-sec.img \
 --hostname ws-sec \
 --run-command 'echo "ubuntu ALL=(root) NOPASSWD:ALL" | tee -a /etc/sudoers.d/ubuntu' \
 --chmod 0440:/etc/sudoers.d/ubuntu \
---copy-in firstboots.sh/secfb:/root/ \
+--copy-in firstboots/secfb.sh:/root/ \
 --install mysql-server,mysql-client,nginx,php-fpm,php-mysql \
 --install php-curl,php-gd,php-mbstring,php-mcrypt,php-xml,php-xmlrpc \
 --run-command 'sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config' \
